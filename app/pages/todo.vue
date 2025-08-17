@@ -39,7 +39,6 @@
   var debugVal = ref('Debugging is enabled');
   var status = ref('void'); // Reactive variable for status message
 
-
   async function addTodo() {
     var existingTodo = '';
 
@@ -55,10 +54,12 @@
       alert(`Todo "${existingTodo}" already exists.`);
     }
 
-    status = await useFetch('/api/add')
+    status = await useFetch('/api/addTodo', {
+      method: 'POST',
+      body: { text: inputText.value }
+    })
 
   }
-
   function deleteTodo(id) {
     todos.value = todos.value.filter(todo => todo.id !== id);
   }
