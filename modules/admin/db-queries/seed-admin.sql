@@ -1,1 +1,0 @@
-INSERT INTO todos (title, completed) VALUES ('Learn Vue.js', 0), ('Build a Todo App', 0), ('Deploy the App', 0);
