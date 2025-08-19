@@ -13,8 +13,8 @@
     <ul style="list-style-type: none;">
       <li v-for="todo in todos" :key="'todo-'+todo.id" :id="'todo-'+todo.id">
         <div>
-          <input type="checkbox" :checked="false"/>
-          {{ todo.text }}
+          <input type="checkbox" :checked="todo.completed"/>
+          {{ todo.title }}
           <button @click="deleteTodo(todo.id)">delete</button>
         </div>
       </li>
@@ -30,11 +30,10 @@
 <script setup>  
   import { ref } from 'vue'
   // Reactive variable for todos
-  const todos = ref([
-    { id: 1, text: 'Learn Vue.js'},
-    { id: 2, text: 'Build a Todo App'},
-    { id: 3, text: 'Deploy the App'}
-  ]);
+  var todo_list = await useFetch('/api/getTodos', {
+    method: 'GET'
+  });
+  const todos = ref(todo_list.data.value.results); // Initialize with fetched todos or empty array 
   var inputText = ref('');
   var debugVal = ref('Debugging is enabled');
   var status = ref('void'); // Reactive variable for status message
@@ -44,10 +43,10 @@
 
     if (inputText.value.trim() === '') {
       alert('Please enter a todo item.');
-    } else if (todos.value.some(todo => todo.text === inputText.value)) {
+    } else if (todos.value.some(todo => todo.title === inputText.value)) {
       alert('This todo already exists.');
     } else {
-      todos.value.push({ id: todos.value.length + 1, text: inputText.value});
+      todos.value.push({ id: todos.value.length + 1, title: inputText.value});
       inputText.value = ''; // Clear the input field after adding a todo
     }
     if (existingTodo) {
